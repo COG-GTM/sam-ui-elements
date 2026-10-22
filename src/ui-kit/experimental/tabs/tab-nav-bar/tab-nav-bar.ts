@@ -7,7 +7,6 @@
  */
 
 import {
-  AfterContentInit,
   Component,
   Directive,
   ElementRef,
@@ -36,9 +35,7 @@ import { Subject, Subscription } from "rxjs";
   encapsulation: ViewEncapsulation.None,
   standalone: false,
 })
-export class MdTabNav
-  implements AfterContentInit, OnDestroy, AfterContentChecked
-{
+export class MdTabNav implements OnDestroy, AfterContentChecked {
   /** Subject that emits when the component has been destroyed. */
   private _onDestroy = new Subject<void>();
 
@@ -55,8 +52,6 @@ export class MdTabNav
     this._activeLinkChanged = this._activeLinkElement != element;
     this._activeLinkElement = element;
   }
-
-  ngAfterContentInit(): void {}
 
   /** Checks if the active link has been changed and, if so, will update the ink bar. */
   ngAfterContentChecked(): void {
@@ -83,7 +78,6 @@ export const _MdTabLinkMixinBase = mixinDisabled(MdTabLinkBase);
  */
 @Directive({
   selector: "[md-tab-link], [mat-tab-link], [mdTabLink], [matTabLink]",
-  inputs: ["disabled"],
   host: {
     class: "mat-tab-link",
     "[attr.aria-disabled]": "disabled.toString()",
@@ -94,6 +88,15 @@ export const _MdTabLinkMixinBase = mixinDisabled(MdTabLinkBase);
 export class MdTabLink extends _MdTabLinkMixinBase implements CanDisable {
   private _mdTabNavBar = inject(MdTabNav);
   private _elementRef = inject(ElementRef);
+
+  /** Whether the link is disabled; delegates to the `mixinDisabled` accessor. */
+  @Input()
+  get disabled(): boolean {
+    return super.disabled;
+  }
+  set disabled(value: boolean) {
+    super.disabled = value;
+  }
 
   /** Whether the tab link is active or not. */
   private _isActive: boolean = false;

@@ -28,7 +28,7 @@ export class SamTabComponent {
   /**
    * Set tab text
    */
-  @Input("tabTitle") title: string;
+  @Input() tabTitle: string;
   /**
    * Set tab active class, defaults to false
    */
@@ -64,12 +64,12 @@ export class SamTabComponent {
           [ngClass]="{ active: tab.active, disabled: tab.disabled }"
           *ngIf="!tab.float"
         >
-          {{ tab.title }}
+          {{ tab.tabTitle }}
         </a>
         <button
           class="sam-ui button secondary tiny"
           [attr.disabled]="tab.disabled ? 'disabled' : null"
-          [innerText]="tab.title"
+          [innerText]="tab.tabTitle"
           (click)="selectTab(tab, i)"
           *ngIf="tab.float"
         ></button>

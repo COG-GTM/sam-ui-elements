@@ -275,7 +275,7 @@ export class DatepickerComponent
       this.currentYear,
       this.currentMonthNumber
     );
-    this.calendarDays = [].concat.apply([], calendarArray);
+    this.calendarDays = [].concat(...calendarArray);
     this.calendarDays = this.filterInvalidDays(this.calendarDays);
   }
 
@@ -331,7 +331,7 @@ export class DatepickerComponent
       this.currentYear,
       this.currentMonthNumber
     );
-    this.calendarDays = [].concat.apply([], calendarArray);
+    this.calendarDays = [].concat(...calendarArray);
     this.calendarDays = this.filterInvalidDays(this.calendarDays);
   }
 

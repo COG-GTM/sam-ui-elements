@@ -11,7 +11,7 @@ import {
 @Component({
   selector: "sam-icon",
   template: `<sam-fa-icon
-    [icon]="iconProp"
+    [icon]="icon"
     [title]="title"
     [spin]="spin"
     [size]="size"
@@ -22,8 +22,7 @@ import {
   standalone: false,
 })
 export class SamIconComponent {
-  // tslint:disable-next-line:no-input-rename
-  @Input("icon") iconProp: IconProp;
+  @Input() icon: IconProp;
   @Input() title?: string;
   @Input() spin?: boolean;
   //@Input() pulse?: boolean;

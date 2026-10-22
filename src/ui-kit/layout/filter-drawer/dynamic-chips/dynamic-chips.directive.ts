@@ -78,9 +78,7 @@ export class DynamicChipsDirective implements OnInit {
   }
 
   private _toggleClearAll(filters: FilterDrawerChipModel[]): void {
-    filters.length > 0
-      ? (this.host.showClear = true)
-      : (this.host.showClear = false);
+    this.host.showClear = filters.length > 0;
   }
 
   private _renderChip(filter: FilterDrawerChipModel): void {

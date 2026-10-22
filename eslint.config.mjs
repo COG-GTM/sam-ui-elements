@@ -94,6 +94,16 @@ export default tseslint.config(
       // and never-reassigned `let` bindings are fully cleaned up).
       "prefer-const": "error",
       "@typescript-eslint/no-unused-vars": "error",
+      // GSA/sam-ui-elements#580: promoted to errors once each rule reached
+      // zero warnings (empty lifecycle hooks removed, `inputs:` metadata
+      // replaced with `@Input()`, input aliases dropped in favor of
+      // matching property names, `.apply()` spreads and a statement-position
+      // ternary rewritten).
+      "@angular-eslint/no-empty-lifecycle-method": "error",
+      "@angular-eslint/no-inputs-metadata-property": "error",
+      "@angular-eslint/no-input-rename": "error",
+      "@typescript-eslint/no-unused-expressions": "error",
+      "prefer-spread": "error",
     },
   },
   {

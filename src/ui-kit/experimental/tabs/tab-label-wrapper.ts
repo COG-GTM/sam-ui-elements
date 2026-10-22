@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import { Directive, ElementRef, inject } from "@angular/core";
+import { Directive, ElementRef, Input, inject } from "@angular/core";
 import {
   CanDisable,
   mixinDisabled,
@@ -23,7 +23,6 @@ export const _MdTabLabelWrapperMixinBase = mixinDisabled(MdTabLabelWrapperBase);
  */
 @Directive({
   selector: "[md-tab-label-wrapper], [mat-tab-label-wrapper]",
-  inputs: ["disabled"],
   host: {
     "[class.mat-tab-disabled]": "disabled",
   },
@@ -34,6 +33,15 @@ export class MdTabLabelWrapper
   implements CanDisable
 {
   elementRef = inject(ElementRef);
+
+  /** Whether the tab is disabled; delegates to the `mixinDisabled` accessor. */
+  @Input()
+  get disabled(): boolean {
+    return super.disabled;
+  }
+  set disabled(value: boolean) {
+    super.disabled = value;
+  }
 
   /** Sets focus on the wrapper element */
   focus(): void {

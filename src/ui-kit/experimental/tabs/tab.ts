@@ -31,11 +31,19 @@ export const _MdTabMixinBase = mixinDisabled(MdTabBase);
 @Component({
   selector: "sam-tab-next",
   templateUrl: "tab.html",
-  inputs: ["disabled"],
   standalone: false,
 })
 export class MdTab extends _MdTabMixinBase implements OnInit, CanDisable {
   private _viewContainerRef = inject(ViewContainerRef);
+
+  /** Whether the tab is disabled; delegates to the `mixinDisabled` accessor. */
+  @Input()
+  get disabled(): boolean {
+    return super.disabled;
+  }
+  set disabled(value: boolean) {
+    super.disabled = value;
+  }
 
   /** Content for the tab label given by <ng-template md-tab-label>. */
   @ContentChild(MdTabLabel, { static: true }) templateLabel: MdTabLabel;
@@ -44,7 +52,7 @@ export class MdTab extends _MdTabMixinBase implements OnInit, CanDisable {
   @ViewChild(TemplateRef, { static: true }) _content: TemplateRef<unknown>;
 
   /** The plain text label for the tab, used when there is no template label. */
-  @Input("label") textLabel: string = "";
+  @Input() label: string = "";
 
   /** The portal that will be the hosted content of the tab */
   private _contentPortal: TemplatePortal | null = null;

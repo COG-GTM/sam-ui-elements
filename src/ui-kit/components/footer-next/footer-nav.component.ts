@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input } from "@angular/core";
 
 @Component({
   selector: "sam-footer-nav",
@@ -10,9 +10,6 @@ import { Component, Input, OnInit } from "@angular/core";
   `,
   standalone: false,
 })
-export class SamFooterNavComponent implements OnInit {
+export class SamFooterNavComponent {
   @Input() title: string;
-  constructor() {}
-
-  ngOnInit() {}
 }

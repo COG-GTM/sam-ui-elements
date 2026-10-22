@@ -54,7 +54,6 @@ describe("MdTabNav", () => {
     // ordinary lifecycle: create, then destroy. It used to throw
     // "Cannot read properties of undefined (reading 'unsubscribe')".
     const freshNav = new MdTabNav();
-    freshNav.ngAfterContentInit();
 
     expect(() => freshNav.ngOnDestroy()).not.toThrow();
   });

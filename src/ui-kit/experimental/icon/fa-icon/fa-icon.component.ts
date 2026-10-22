@@ -43,8 +43,7 @@ export class SamFAIconComponent implements OnChanges {
   private sanitizer = inject(DomSanitizer);
 
   @HostBinding("class") public faIconClass = "ng-fa-icon";
-  // tslint:disable-next-line:no-input-rename
-  @Input("icon") iconProp: IconProp;
+  @Input() icon: IconProp;
   @Input() title?: string;
   @Input() spin?: boolean;
   @Input() pulse?: boolean;
@@ -62,7 +61,7 @@ export class SamFAIconComponent implements OnChanges {
   @Input() classes?: string[] = [];
   @Input() transform?: string | Transform;
 
-  public icon: Icon;
+  public renderedIcon: Icon;
 
   @HostBinding("innerHTML")
   public renderedIconHTML: SafeHtml;
@@ -83,7 +82,7 @@ export class SamFAIconComponent implements OnChanges {
    * Updating icon spec.
    */
   private updateIconSpec() {
-    this.iconSpec = faNormalizeIconSpec(this.iconProp);
+    this.iconSpec = faNormalizeIconSpec(this.icon);
   }
 
   /**
@@ -128,7 +127,7 @@ export class SamFAIconComponent implements OnChanges {
    * Updating icon by params and icon spec.
    */
   private updateIcon() {
-    this.icon = icon(this.iconSpec, this.params);
+    this.renderedIcon = icon(this.iconSpec, this.params);
   }
 
   /**
@@ -136,10 +135,10 @@ export class SamFAIconComponent implements OnChanges {
    */
   private renderIcon() {
     faWarnIfIconSpecMissing(this.iconSpec);
-    faWarnIfIconHtmlMissing(this.icon, this.iconSpec);
+    faWarnIfIconHtmlMissing(this.renderedIcon, this.iconSpec);
 
     this.renderedIconHTML = this.sanitizer.bypassSecurityTrustHtml(
-      this.icon ? this.icon.html.join("\n") : faNotFoundIconHtml
+      this.renderedIcon ? this.renderedIcon.html.join("\n") : faNotFoundIconHtml
     );
   }
 }

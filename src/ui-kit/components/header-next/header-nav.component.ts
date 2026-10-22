@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input } from "@angular/core";
 
 @Component({
   selector: "sam-header-nav",
@@ -14,9 +14,6 @@ import { Component, Input, OnInit } from "@angular/core";
   `,
   standalone: false,
 })
-export class SamHeaderNavComponent implements OnInit {
+export class SamHeaderNavComponent {
   @Input() type: string;
-  constructor() {}
-
-  ngOnInit() {}
 }
