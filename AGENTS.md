@@ -23,6 +23,7 @@ This is a **raw-source, dual-workspace** Angular library, not a normal Angular C
 - **`coverage-floor.json` is a ratchet — it only ever moves up, and only via a dedicated bump.** Feature and spec PRs must **not** edit `coverage-floor.json` directly; raising it is a separate, deliberate commit made with `npm run coverage:bump` (rewrites the floor file to the currently measured coverage — preserving istanbul's fractional `pct`, not floored to a whole percent — and never lowering an existing entry). `.github/workflows/ci.yml` also runs `scripts/check-coverage-floor-not-decreased.mjs` on PRs, comparing `coverage-floor.json` against the base branch and failing if any metric's floor decreased, so a floor can't be hand-lowered in the same PR that regresses coverage. This mirrors the ESLint baseline guard below.
 - The gate scripts are covered by `node --test scripts/check-coverage.test.mjs` and `node --test scripts/check-coverage-floor-not-decreased.test.mjs` (Node's built-in test runner, no extra deps). These are **not currently wired into any CI workflow** — run them manually after touching either script.
 - Playwright E2E smoke test (`test-app/e2e/`) runs via `npm --prefix test-app run test:e2e`, gated separately in `.github/workflows/e2e.yml`.
+- WCAG 2.1 AA accessibility gate (`test-app/playwright.a11y.config.ts`, spec in `test-app/e2e/accessibility/`) runs via `npm run test:a11y` (root, delegates to `test-app`) and is enforced in the same `e2e.yml` job. It mirrors the `playwright.a11y.config.{mjs,ts}` pattern in `sam-styles` and `ngx-uswds` (GSA/sam-ui-elements#708): axe-core scans every route declared in `test-app/src/app/app.module.ts` with the `wcag2a`/`wcag2aa`/`wcag21a`/`wcag21aa` tags and diffs the violation fingerprints (`<route> | <rule id> | <selector>`) against the committed `test-app/e2e/accessibility/wcag-2.1-aa-baseline.json`. **The baseline is a ratchet like `coverage-floor.json` and `eslint-baseline.json`**: new violations fail CI and must be fixed, not baselined; resolved violations fail CI until they're removed from the baseline. `UPDATE_A11Y_BASELINE=1 npm run test:a11y` rewrites it. Because the spec reads the route table from `app.module.ts`, every new `<name>-gallery` route is scanned automatically — adding a gallery route is how you put a component under the a11y gate.
 
 ### Choosing between Vitest and Playwright
 
@@ -83,7 +84,7 @@ Two related traps worth knowing:
 
 - `.github/workflows/ci.yml` — installs both workspaces, runs `npm --prefix test-app test`, then `npm run coverage:check`.
 - `.github/workflows/lint.yml` — format check, baseline-not-increased guard, `ng lint` + baseline gate for both workspaces.
-- `.github/workflows/e2e.yml` — Playwright smoke test.
+- `.github/workflows/e2e.yml` — Playwright smoke test, then the WCAG 2.1 AA gate (`npm run test:a11y`).
 - `.github/workflows/security.yml` — DAST (OWASP ZAP) against `test-app` built in production mode; SAST is GitHub CodeQL default setup (no committed workflow). See `docs/security-scanning.md`.
 - `.github/workflows/publish.yml` — npm Trusted Publisher (OIDC) flow, gated on `validate:publish`; only trigger is a GitHub Release (or a dry-run `workflow_dispatch`).
 

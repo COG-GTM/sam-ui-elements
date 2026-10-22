@@ -13,6 +13,10 @@ If you've found a bug or have a feature request, please [open an issue](../../is
   - Does PR include a component from another library?
     - [ ] The developer added test cases to cover integrating with library
     - [ ] If extending a third-party component, you have validated that is the best design solution
+- Accessibility
+  - [ ] `npm run test:a11y` (the WCAG 2.1 AA gate in `test-app/playwright.a11y.config.ts`) passes against the committed `test-app/e2e/accessibility/wcag-2.1-aa-baseline.json`
+  - [ ] No new violation fingerprints were added to the baseline; fix the markup instead. Entries are only removed (after a fix) via `UPDATE_A11Y_BASELINE=1 npm run test:a11y`
+  - [ ] A component rendered in a new `test-app` gallery route is scanned automatically — confirm the route is declared in `test-app/src/app/app.module.ts`
 - HTML/CSS/UI Controls
   - [ ] HTML markup and CSS classes are semantic and meaningful
   - [ ] Styles are applied by classes, not through style tags on elements
