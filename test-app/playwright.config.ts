@@ -2,6 +2,8 @@ import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
   testDir: "./e2e",
+  // The WCAG gate has its own config (playwright.a11y.config.ts) and budget.
+  testIgnore: "**/accessibility/**",
   timeout: 30_000,
   expect: {
     timeout: 5_000,

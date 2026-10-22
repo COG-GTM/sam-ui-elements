@@ -24,7 +24,7 @@ Run `npm run test:e2e` to execute the [Playwright](https://playwright.dev/) smok
 
 ## Running the accessibility gate
 
-Run `npm run test:a11y` to execute the WCAG 2.1 AA gate (`playwright.a11y.config.ts`, spec in `e2e/accessibility/`). It boots the dev server, visits every route declared in `src/app/app.module.ts`, scans each with [axe-core](https://github.com/dequelabs/axe-core) using the `wcag2a`, `wcag2aa`, `wcag21a`, and `wcag21aa` rule tags, and compares the violations against the committed baseline `e2e/accessibility/wcag-2.1-aa-baseline.json`. New violations fail the run; violations that no longer reproduce must be removed from the baseline. After an intentional change, regenerate the baseline with `UPDATE_A11Y_BASELINE=1 npm run test:a11y` and commit the result.
+Run `npm run test:a11y` to execute the WCAG 2.1 AA gate (`playwright.a11y.config.ts`, spec in `e2e/accessibility/`). It boots the dev server, visits every route declared in `src/app/app.module.ts`, scans each with [axe-core](https://github.com/dequelabs/axe-core) using the `wcag2a`, `wcag2aa`, `wcag21a`, and `wcag21aa` rule tags, and compares the violations against the committed baseline `e2e/accessibility/wcag-2.1-aa-baseline.json`. New violations fail the run; violations that no longer reproduce must be removed from the baseline. After fixing a violation, shrink the baseline with `UPDATE_A11Y_BASELINE=1 npm run test:a11y` and commit the result. Update mode still fails on new violations, so the baseline can only ever shrink. The smoke config (`playwright.config.ts`) ignores `e2e/accessibility/**`, so `npm run test:e2e` does not re-run the scan.
 
 ## Further help
 

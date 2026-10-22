@@ -120,11 +120,6 @@ test("test-app routes have no unresolved WCAG 2.1 AA violations", async ({
   }
 
   const current = [...new Set(fingerprints)].sort();
-
-  if (process.env.UPDATE_A11Y_BASELINE === "1") {
-    writeFileSync(BASELINE_PATH, `${JSON.stringify(current, null, 2)}\n`);
-  }
-
   const baseline = JSON.parse(readFileSync(BASELINE_PATH, "utf8")) as string[];
   const baselineSet = new Set(baseline);
   const currentSet = new Set(current);
@@ -135,10 +130,18 @@ test("test-app routes have no unresolved WCAG 2.1 AA violations", async ({
     (fingerprint) => !currentSet.has(fingerprint)
   );
 
+  // New violations always fail, even in update mode: the baseline is a ratchet
+  // that only ever shrinks. UPDATE_A11Y_BASELINE=1 may only drop resolved entries.
   expect(
     newViolations,
-    "New WCAG 2.1 A/AA violations (fix them; do not update the baseline)"
+    "New WCAG 2.1 A/AA violations (fix them; the baseline only ever shrinks)"
   ).toEqual([]);
+
+  if (process.env.UPDATE_A11Y_BASELINE === "1") {
+    writeFileSync(BASELINE_PATH, `${JSON.stringify(current, null, 2)}\n`);
+    return;
+  }
+
   expect(
     resolvedViolations,
     "Resolved WCAG 2.1 A/AA violations (remove them from the baseline with UPDATE_A11Y_BASELINE=1)"

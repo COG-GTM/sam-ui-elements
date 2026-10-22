@@ -9,6 +9,7 @@ import baseConfig from "./playwright.config";
 export default defineConfig({
   ...baseConfig,
   testDir: "./e2e/accessibility",
+  testIgnore: [],
   timeout: 600_000,
   fullyParallel: false,
   workers: 1,
